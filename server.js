@@ -1,5 +1,5 @@
 const http = require('http')
-
+let s;
 let reqCount = 0
 
 const server = http.createServer((req, res) => {
