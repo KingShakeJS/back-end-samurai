@@ -1,25 +1,50 @@
 const http = require('http')
-let s;
-let reqCount = 0
+const fs = require('fs')
 
-const server = http.createServer((req, res) => {
-    reqCount++
+const delay = (ms) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve()
+        }, ms)
+    })
+}
+const readFile = (path) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(`pages/${path}.html`, (err, data) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(data)
+            }
+        })
+    })
 
+
+}
+
+const server = http.createServer(async (req, res) => {
     switch (req.url) {
-        case '/students':
-            res.write('students')
+        case '/home': {
+            try {
+                const data = await readFile(`home`)
+                res.write(data)
+                res.end()
+            } catch (e) {
+                res.write('error!')
+                res.end()
+            }
             break
-        case '/':
-        case '/courses':
-            res.write('courses')
+        }
+        case '/about': {
+            await delay(3000)
+            res.write('write about')
+            res.end()
             break
+        }
         default:
             res.write('404')
+            res.end()
     }
-    res.write(' IT-KAMASUTRA ' + reqCount)
-
-
-    res.end()
 })
 
 server.listen(3003)
