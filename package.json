@@ -1,0 +1,24 @@
+{
+  "name": "back-end-samurai",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "git@github.com:KingShakeJS/back-end-samurai.git",
+  "author": "KingShakeJS <kingshakejs@yandex.ru>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon dist/index.js",
+    "inspect": "nodemon --inspect dist/index.js",
+    "tsc": "tsc -w"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "nodemon": "^3.1.7"
+
+  }
+}
