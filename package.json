@@ -8,12 +8,18 @@
   "scripts": {
     "start": "nodemon dist/index.js",
     "inspect": "nodemon --inspect dist/index.js",
-    "tsc": "tsc -w"
+    "tsc": "tsc -w",
+    "test": "jest"
   },
   "dependencies": {
     "@types/body-parser": "^1.19.5",
+    "@types/jest": "^29.5.14",
+    "@types/supertest": "^6.0.2",
     "cors": "^2.8.5",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

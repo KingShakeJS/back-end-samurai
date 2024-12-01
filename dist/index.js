@@ -3,18 +3,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
 // const express = require('express')
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 // const tls = require("tls");
-const app = (0, express_1.default)();
+exports.app = (0, express_1.default)();
 const port = 3003;
 const jsonBodyMiddleware = express_1.default.json();
-app.use(jsonBodyMiddleware);
-app.use((0, cors_1.default)());
-app.use((0, body_parser_1.default)());
-//////////////////////////// 12 31:55
+exports.app.use(jsonBodyMiddleware);
+exports.app.use((0, cors_1.default)());
+exports.app.use((0, body_parser_1.default)());
+//////////////////////////// 14
 const DataBase = {
     courses: [
         { id: 1, title: 'front1' },
@@ -45,16 +46,16 @@ const HTTP_STATUSES = {
     BAD_REQUEST_400: 400,
     NOT_FOUNDED_404: 404,
 };
-app.get('/', (req, res) => {
+exports.app.get('/', (req, res) => {
     res.json({ message: 'IT-INCUBATOR' });
 });
-app.get('/samurais', (req, res) => {
+exports.app.get('/samurais', (req, res) => {
     res.send('Hello samurais!!!!');
 });
-app.post('/samurais', (req, res) => {
+exports.app.post('/samurais', (req, res) => {
     res.send('мы создали самурая');
 });
-app.get('/courses', (req, res) => {
+exports.app.get('/courses', (req, res) => {
     let foundCourses = DataBase.courses;
     if (req.query.title) {
         foundCourses = foundCourses.filter(c => c.title.indexOf(req.query.title) > -1);
@@ -65,7 +66,7 @@ app.get('/courses', (req, res) => {
     // }
     res.json(foundCourses);
 });
-app.get('/courses/:id', (req, res) => {
+exports.app.get('/courses/:id', (req, res) => {
     const foundCourse = DataBase.courses.find(c => c.id === +req.params.id);
     if (!foundCourse) {
         res.sendStatus(HTTP_STATUSES.NOT_FOUNDED_404);
@@ -73,7 +74,7 @@ app.get('/courses/:id', (req, res) => {
     }
     res.json(foundCourse);
 });
-app.post('/courses', (req, res) => {
+exports.app.post('/courses', (req, res) => {
     if (!req.body.title) {
         res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400);
         return;
@@ -85,7 +86,7 @@ app.post('/courses', (req, res) => {
     DataBase.courses.push(createdCourse);
     res.status(HTTP_STATUSES.CREATED_201).json(createdCourse);
 });
-app.post('/products', (req, res) => {
+exports.app.post('/products', (req, res) => {
     if (!req.body.title) {
         res.status(HTTP_STATUSES.BAD_REQUEST_400).send('не вышло');
         return;
@@ -97,11 +98,11 @@ app.post('/products', (req, res) => {
     DataBase.products.push(product);
     res.status(HTTP_STATUSES.CREATED_201).json(product);
 });
-app.delete('/courses/:id', (req, res) => {
+exports.app.delete('/courses/:id', (req, res) => {
     DataBase.courses = DataBase.courses.filter(c => c.id !== +req.params.id);
     res.sendStatus(204);
 });
-app.put('/courses/:id', (req, res) => {
+exports.app.put('/courses/:id', (req, res) => {
     if (!req.body.title) {
         res.sendStatus(HTTP_STATUSES.NOT_FOUNDED_404);
         return;
@@ -114,7 +115,7 @@ app.put('/courses/:id', (req, res) => {
     foundCourse.title = req.body.title;
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 });
-app.get(`/products`, (req, res) => {
+exports.app.get(`/products`, (req, res) => {
     let searchString = req.query.title;
     if (searchString) {
         let search = searchString.toString();
@@ -122,7 +123,7 @@ app.get(`/products`, (req, res) => {
     }
     res.send(DataBase.products);
 });
-app.get(`/products/:id`, (req, res) => {
+exports.app.get(`/products/:id`, (req, res) => {
     let product = DataBase.products.find(p => p.id === +req.params.id);
     if (product) {
         res.send(product);
@@ -132,7 +133,7 @@ app.get(`/products/:id`, (req, res) => {
         return;
     }
 });
-app.delete(`/products/:id`, (req, res) => {
+exports.app.delete(`/products/:id`, (req, res) => {
     for (let i = 0; i < DataBase.products.length; i++) {
         if (DataBase.products[i].id === +req.params.id) {
             DataBase.products.splice(i, 1);
@@ -142,10 +143,10 @@ app.delete(`/products/:id`, (req, res) => {
     }
     res.sendStatus(HTTP_STATUSES.NOT_FOUNDED_404);
 });
-app.get('/addresses', (req, res) => {
+exports.app.get('/addresses', (req, res) => {
     res.status(HTTP_STATUSES.OK_200).json(DataBase.addresses);
 });
-app.get('/addresses/:id', (req, res) => {
+exports.app.get('/addresses/:id', (req, res) => {
     const address = DataBase.addresses.find(a => a.id === +req.params.id);
     if (address) {
         res.status(HTTP_STATUSES.OK_200).json(address);
@@ -154,7 +155,7 @@ app.get('/addresses/:id', (req, res) => {
         res.sendStatus(HTTP_STATUSES.NOT_FOUNDED_404);
     }
 });
-app.put('/products/:id', (req, res) => {
+exports.app.put('/products/:id', (req, res) => {
     if (!req.body.title) {
         res.sendStatus(HTTP_STATUSES.NOT_FOUNDED_404);
         return;
@@ -167,6 +168,6 @@ app.put('/products/:id', (req, res) => {
     foundProduct.title = req.body.title;
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 });
-app.listen(port, () => {
+exports.app.listen(port, () => {
     console.log(`сайтик стартанул на порте: ${port}`);
 });

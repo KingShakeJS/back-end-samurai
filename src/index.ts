@@ -1,17 +1,20 @@
 // const express = require('express')
+
+// следующий урок 15
+
 import express, {Request, Response} from 'express'
 import cors from 'cors'
 import bodyParser from "body-parser";
 
 
 // const tls = require("tls");
-const app = express()
+export const app = express()
 const port = 3003
 const jsonBodyMiddleware = express.json()
 app.use(jsonBodyMiddleware)
 app.use(cors())
 app.use(bodyParser())
-//////////////////////////// 12 31:55
+//////////////////////////// 14
 
 const DataBase = {
     courses: [
@@ -114,7 +117,7 @@ app.delete('/courses/:id', (req, res) => {
 
 app.put('/courses/:id', (req: Request, res: Response) => {
     if (!req.body.title) {
-        res.sendStatus(HTTP_STATUSES.NOT_FOUNDED_404)
+        res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
         return
     }
     const foundCourse = DataBase.courses.find(c => c.id === +req.params.id);
@@ -126,7 +129,7 @@ app.put('/courses/:id', (req: Request, res: Response) => {
 
     foundCourse.title = req.body.title
 
-    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
+    res.sendStatus(HTTP_STATUSES.OK_200)
 })
 
 app.get(`/products`, (req: Request, res: Response) => {
@@ -183,6 +186,10 @@ app.put('/products/:id', (req: Request, res: Response) => {
 
     foundProduct.title = req.body.title
 
+    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
+})
+app.delete('/__test__/data', (req, res)=>{
+    DataBase.courses = []
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 })
 
